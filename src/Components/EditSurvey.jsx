@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import FabricCanvas from './FabricCanvas';
 
 const EditSurvey = () => {
   const location = useLocation();
@@ -9,6 +8,10 @@ const EditSurvey = () => {
   const [name, setName] = useState(name2);
   const [description, setDescription] = useState(description2);
   const navigate = useNavigate();
+  const { survey } = location.state || {};
+  // const [canvasData, setCanvasData] = useState('');
+  const childRef = useRef(null);
+  const [canvasData, setData] = useState('');
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -16,9 +19,10 @@ const EditSurvey = () => {
       const data = await response.json();
       setName(data.name);
       setDescription(data.description);
+      setCanvasData(data.survey_detail ? data.survey_detail.coordinates : '');
     };
     fetchSurvey();
-  }, [id]);
+  }, [id, survey]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,23 +31,75 @@ const EditSurvey = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ survey: { name, description } }),
+      body: JSON.stringify({ survey: { 
+      	name, 
+      	description,
+      	survey_detail_attributes: {
+          coordinates: canvasData
+        } 
+      } 
+    	}),
     });
     console.log(id, name, description);
     alert('Survey updated successfully!');
-    navigate(`/`)
+    navigate(`/`);
+  };
+
+  const handleDragStart = (e, type) => {
+    e.dataTransfer.setData('type', type);
+  };
+
+  const handleCanvasChange = (data) => {
+    setCanvasData(data);
+    console.log(data);
+  };
+
+  const fetchDataFromChild = () => {
+  	// debugger
+    if (childRef.current) {
+      const childData = childRef.current.getData();
+      console.log(childData);
+      setData(childData);
+      // return canvasData;
+    }
   };
 
   return (
-    <div className="form-container">
-      <div className="form-header">Edit Survey</div>
-      <form onSubmit={handleSubmit}>
-        <label>Name:</label>
-        <input type="text" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <label>Description:</label>
-        <input type="text" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-        <button type="submit" className="btn">Update Survey</button>
-      </form>
+    <div className="board">
+      <div className="left-pane">
+        <div className="edit-form-container">
+          <div className="edit-form-header">Edit Survey</div>
+          <form onSubmit={handleSubmit}>
+            <label>Name:</label>
+            <input className="edit-input" type="text" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <label>Description:</label>
+            <input className="edit-input" type="text" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <button type="submit" className="edit-btn" onClick={fetchDataFromChild()}>Update Survey</button>
+          </form>
+        </div>
+        <div className="toolbox">
+          <div
+            className="toolbox-item"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'textbox')}
+          >
+            Textbox
+          </div>
+          <div
+            className="toolbox-item"
+            draggable
+            onDragStart={(e) => handleDragStart(e, 'label')}
+          >
+            Label
+          </div>
+        </div>
+      </div>
+      <div className="right-pane">
+        <FabricCanvas onCanvasChange={handleCanvasChange} />
+      	<div className="canvas-container">
+        	<FabricCanvas ref={childRef} />
+        </div>	
+      </div>
     </div>
   );
 }

@@ -117,7 +117,79 @@ a {
   color: #3498db;
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
+}
+.board {
+  display: flex;
+  margin-bottom: 50px;
+}
+
+.left-pane {
+  width: 400px;
+  height: 1273px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+}
+
+.edit-form-container {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.edit-form-header {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.edit-input {
+  width: fit-content;
+  padding: 8px;
+  margin: 5px 0 10px 0;
+}
+
+.edit-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.toolbox {
+  margin-top: 20px;
+}
+
+.toolbox-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.right-pane {
+  flex: 1;
+  position: relative;
+}
+.canvas-container 
+{
+  position: relative;
+  user-select: none;
+  width: 900px;
+  height: 1273px;
+  border: 1px solid #ddd;
+}
+
+.upper-canvas{
+  position: relative;
+  user-select: none;
+  width: 900px;
+  height: 1273px;
 }
