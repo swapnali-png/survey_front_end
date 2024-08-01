@@ -13,7 +13,7 @@ const SurveyList = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('API Response:', data); // Verify that `data` is an array
+        console.log('API Response:', data);
 
         if (Array.isArray(data)) {
           setSurveys(data);

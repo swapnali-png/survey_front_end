@@ -9,9 +9,8 @@ const EditSurvey = () => {
   const [description, setDescription] = useState(description2);
   const navigate = useNavigate();
   const { survey } = location.state || {};
-  // const [canvasData, setCanvasData] = useState('');
   const childRef = useRef(null);
-  const [canvasData, setData] = useState('');
+  const [canvasData, setCanvasData] = useState('');
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -55,12 +54,10 @@ const EditSurvey = () => {
   };
 
   const fetchDataFromChild = () => {
-  	// debugger
     if (childRef.current) {
       const childData = childRef.current.getData();
       console.log(childData);
       setData(childData);
-      // return canvasData;
     }
   };
 
@@ -96,9 +93,6 @@ const EditSurvey = () => {
       </div>
       <div className="right-pane">
         <FabricCanvas onCanvasChange={handleCanvasChange} />
-      	<div className="canvas-container">
-        	<FabricCanvas ref={childRef} />
-        </div>	
       </div>
     </div>
   );

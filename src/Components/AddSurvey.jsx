@@ -37,22 +37,22 @@ export default function AddSurvey() {
       setDescription('');
     } catch (error) {
       console.error('Error:', error);
-      setError('Failed to create survey');
+      setError('Failed to create new survey');
     }
   };
 
   return (
     <div className="form-container">
-    <div className="form-header">Add Survey</div>
-    <form onSubmit={handleSubmit}>
-    <label>Name:</label>
-    <input type="text" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} />
-    <label>Description:</label>
-    <input type="text" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-    <button type="submit" className="btn">Add Survey</button>
-    {success && <p style={{ color: 'green' }}>{success}</p>}
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+      <div className="form-header">Add Survey</div>
+      <form onSubmit={handleSubmit}>
+        <label>Name:</label>
+        <input type="text" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} />
+        <label>Description:</label>
+        <input type="text" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <button type="submit" className="btn">Add Survey</button>
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
     </div>
-    );
-  }
+  );
+}
